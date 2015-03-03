@@ -30,6 +30,8 @@ public:
 
     size_t Allocate(size_t slots_required);
 
+    static const size_t noffset = static_cast<size_t>(-1);
+
 private:
     FRIEND_TEST_WITH_PREFIX(BinManager);
 

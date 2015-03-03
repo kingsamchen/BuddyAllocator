@@ -28,5 +28,9 @@ BinManager::BinManager(size_t total_slot_count)
 
 size_t BinManager::Allocate(size_t slots_required)
 {
+    // if slots_required is not a power of 2, tweak it to the next.
+    // if there is no bin with enough slots, return noffset.
+    // traverse the bin-node-tree (left->right) to find a match.
+    // backtrace to fix the current bin nodes information.
     return 0;
 }
