@@ -9,8 +9,12 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\buddy_allocator.cpp" />
+    <ClCompile Include="src\bin_manager.cpp" />
+    <ClCompile Include="src\buddy_util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\buddy_allocator.h" />
+    <ClInclude Include="src\bin_manager.h" />
+    <ClInclude Include="src\buddy_util.h" />
   </ItemGroup>
 </Project>
