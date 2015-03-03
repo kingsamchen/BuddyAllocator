@@ -15,7 +15,7 @@ BinManager::BinManager(size_t total_slot_count)
     ENSURE(buddy_util::IsPowerOf2(total_slot_count))(total_slot_count).raise();
 
     size_t node_count = (total_slot_count << 1) - 1;
-    maximum_slot_.resize(node_count - 1);
+    maximum_slot_.resize(node_count);
     size_t node_slot_count = total_slot_count << 1;
     for (size_t i = 0; i < node_count; ++i) {
         if (buddy_util::IsPowerOf2(i + 1)) {
@@ -26,3 +26,7 @@ BinManager::BinManager(size_t total_slot_count)
     }
 }
 
+size_t BinManager::Allocate(size_t slots_required)
+{
+    return 0;
+}

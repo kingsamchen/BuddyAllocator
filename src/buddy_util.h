@@ -13,7 +13,7 @@ namespace buddy_util {
 
 inline bool IsPowerOf2(size_t number)
 {
-    return !(number & (number - 1));
+    return number && !(number & (number - 1));
 }
 
 }   // namespace buddy_util

@@ -11,6 +11,8 @@
 
 #include <vector>
 
+#include "compiler_helper.h"
+
 class BinManager {
 public:
     // |initial_slot_count| must be a power of 2.
@@ -27,6 +29,9 @@ public:
     ~BinManager() = default;
 
     size_t Allocate(size_t slots_required);
+
+private:
+    FRIEND_TEST_WITH_PREFIX(BinManager);
 
 private:
     size_t total_slot_count_;
