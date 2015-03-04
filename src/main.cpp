@@ -108,28 +108,45 @@ TEST_F(BinManagerTest, Allocate)
     EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {8,4,4,2,2,2,2,1,1,1,1,1,1,1,1}));
 
     // need 3 slots, allocate 4 slots in fact.
-    // index == 0
-    auto index = bm.Allocate(3);
-    ASSERT_EQ(index, 0);
+    // offset == 0
+    auto offset = bm.Allocate(3);
+    ASSERT_EQ(offset, 0);
     EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {4,0,4,2,2,2,2,1,1,1,1,1,1,1,1}));
 
     // need 2 slots.
-    // index == 4
-    index = bm.Allocate(2);
-    ASSERT_EQ(index, 4);
+    // offset == 4
+    offset = bm.Allocate(2);
+    ASSERT_EQ(offset, 4);
     EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {2,0,2,2,2,0,2,1,1,1,1,1,1,1,1}));
 
     // need yet another 2 slots.
-    // index == 6
-    index = bm.Allocate(2);
-    ASSERT_EQ(index, 6);
+    // offset == 6
+    offset = bm.Allocate(2);
+    ASSERT_EQ(offset, 6);
     EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {0,0,0,2,2,0,0,1,1,1,1,1,1,1,1}));
 
     // need 1 slot, but oops.
-    // index == noffset
-    index = bm.Allocate(1);
-    ASSERT_EQ(index, BinManager::noffset);
+    // offset == noffset
+    offset = bm.Allocate(1);
+    ASSERT_EQ(offset, BinManager::noffset);
     EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {0,0,0,2,2,0,0,1,1,1,1,1,1,1,1}));
+}
+
+TEST_F(BinManagerTest, Free)
+{
+    // Preparation.
+    BinManager bm(8);
+    auto ofs1 = bm.Allocate(4);
+    ASSERT_NE(ofs1, BinManager::noffset);
+    auto ofs2 = bm.Allocate(2);
+    ASSERT_NE(ofs2, BinManager::noffset);
+    ASSERT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {2,0,2,2,2,0,2,1,1,1,1,1,1,1,1}));
+
+    bm.Free(ofs1);
+    EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {4,4,2,2,2,0,2,1,1,1,1,1,1,1,1}));
+
+    bm.Free(ofs2);
+    EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {8,4,4,2,2,2,2,1,1,1,1,1,1,1,1}));
 }
 
 // ----------------------------------------------------------------------------------

@@ -76,7 +76,7 @@ void BinManager::Free(size_t offset)
 {
     // The value of noffset can be regarded as positive infinity.
     assert(offset < total_slot_count_);
-    if (offset <total_slot_count_) {
+    if (offset >= total_slot_count_) {
         return;
     }
 
