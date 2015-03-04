@@ -124,6 +124,12 @@ TEST_F(BinManagerTest, Allocate)
     index = bm.Allocate(2);
     ASSERT_EQ(index, 6);
     EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {0,0,0,2,2,0,0,1,1,1,1,1,1,1,1}));
+
+    // need 1 slot, but oops.
+    // index == noffset
+    index = bm.Allocate(1);
+    ASSERT_EQ(index, BinManager::noffset);
+    EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {0,0,0,2,2,0,0,1,1,1,1,1,1,1,1}));
 }
 
 // ----------------------------------------------------------------------------------

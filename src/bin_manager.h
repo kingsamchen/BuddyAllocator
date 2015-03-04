@@ -30,7 +30,7 @@ public:
 
     size_t Allocate(size_t slots_required);
 
-    void Free(size_t index);
+    void Free(size_t offset);
 
     static const size_t noffset = static_cast<size_t>(-1);
 
