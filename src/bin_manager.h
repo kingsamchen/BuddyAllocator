@@ -28,9 +28,15 @@ public:
 
     ~BinManager() = default;
 
+    // Allocates a bin with enough slots.
+    // Returns the offset to the underlying raw memory chunk.
+    // Manager will internally round |slots_required| to the nearest a power of 2.
     size_t Allocate(size_t slots_required);
 
+    // Reclaims a bin associated with the |offest|.
     void Free(size_t offset);
+
+    size_t BinSizeFor(size_t offset);
 
     static const size_t noffset = static_cast<size_t>(-1);
 

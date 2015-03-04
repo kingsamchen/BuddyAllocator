@@ -57,8 +57,8 @@ size_t BinManager::Allocate(size_t slots_required)
         }
     }
 
-    // The relative distance from first slot in the bin just now allocated to the first
-    // slot in the underlying raw memory chunk.
+    // The relative distance from first slot in the bin just now allocated to the
+    // first slot in the underlying raw memory chunk.
     size_t offset = (index + 1) * slots_needed - total_slot_count_;
 
     max_consecutive_slot_[index] = 0;
