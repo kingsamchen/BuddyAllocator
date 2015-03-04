@@ -149,6 +149,13 @@ TEST_F(BinManagerTest, Free)
     EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {8,4,4,2,2,2,2,1,1,1,1,1,1,1,1}));
 }
 
+TEST_F(BinManagerTest, BinSlotCount)
+{
+    BinManager bm(8);
+    auto ofst = bm.Allocate(3);
+    EXPECT_EQ(bm.SlotCountFor(ofst), 4);
+}
+
 // ----------------------------------------------------------------------------------
 
 int main(int argc, char* argv[])

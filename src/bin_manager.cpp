@@ -112,3 +112,19 @@ void BinManager::Free(size_t offset)
         }
     }
 }
+
+size_t BinManager::SlotCountFor(size_t offset)
+{
+    assert(offset < total_slot_count_);
+    if (offset >= total_slot_count_) {
+        return 0;
+    }
+
+    size_t node_slot_count = 1;
+    for (auto i = offset + total_slot_count_ - 1; max_consecutive_slot_[i];
+         i = buddy_util::Parent(i)) {
+        node_slot_count <<= 1;
+    }
+
+    return node_slot_count;
+}
