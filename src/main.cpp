@@ -77,7 +77,7 @@ protected:
 
     const std::vector<size_t>& get_maximum_slot(const BinManager& bin_manager)
     {
-        return bin_manager.maximum_slot_;
+        return bin_manager.max_consecutive_slot_;
     }
 };
 

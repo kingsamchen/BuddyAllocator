@@ -37,7 +37,7 @@ private:
 
 private:
     size_t total_slot_count_;
-    std::vector<size_t> maximum_slot_;
+    std::vector<size_t> max_consecutive_slot_;
 };
 
 #endif  // BIN_MANAGER_H_
