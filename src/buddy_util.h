@@ -29,6 +29,23 @@ inline size_t NearestUpperPowerOf2(size_t number)
     return ++number;
 }
 
+// Root node is at index 0.
+
+inline size_t Parent(size_t i)
+{
+    return ((i + 1) >> 1) - 1;
+}
+
+inline size_t LeftChild(size_t i)
+{
+    return ((i + 1) << 1) - 1;
+}
+
+inline size_t RightChild(size_t i)
+{
+    return (i + 1) << 1;
+}
+
 }   // namespace buddy_util
 
 #endif  // BUDDY_UTIL_H_

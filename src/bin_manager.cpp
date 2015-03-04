@@ -4,6 +4,8 @@
 
 #include "bin_manager.h"
 
+#include <algorithm>
+
 #if defined(UNITTEST_ENABLED)
 #define NDEBUG
 #include "kbase\error_exception_util.h"
@@ -34,9 +36,33 @@ BinManager::BinManager(size_t total_slot_count)
 
 size_t BinManager::Allocate(size_t slots_required)
 {
-    // if slots_required is not a power of 2, tweak it to the next.
-    // if there is no bin with enough slots, return noffset.
-    // traverse the bin-node-tree (left->right) to find a match.
-    // backtrace to fix the current bin nodes information.
-    return 0;
+    assert(slots_required != 0);
+    if (slots_required == 0) {
+        return BinManager::noffset;
+    }
+
+    size_t slots_needed = buddy_util::NearestUpperPowerOf2(slots_required);
+    if (maximum_slot_[0] < slots_needed) {
+        return BinManager::noffset;
+    }
+
+    size_t index = 0;
+    for (; maximum_slot_[index] != slots_needed;) {
+        if (maximum_slot_[buddy_util::LeftChild(index)] >= slots_needed) {
+            index = buddy_util::LeftChild(index);
+        } else {
+            index = buddy_util::RightChild(index);
+        }
+    }
+
+    maximum_slot_[index] = 0;
+    size_t offset = (index + 1) * slots_needed - total_slot_count_;
+
+    while (index) {
+        index = buddy_util::Parent(index);
+        maximum_slot_[index] = std::max(maximum_slot_[buddy_util::LeftChild(index)],
+                                        maximum_slot_[buddy_util::RightChild(index)]);
+    }
+
+    return offset;
 }

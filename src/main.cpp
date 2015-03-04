@@ -50,6 +50,22 @@ TEST(BuddyUtilTest, NearestUpperPowerOf2)
     EXPECT_EQ(buddy_util::NearestUpperPowerOf2(7), 8);
 }
 
+TEST(BuddyUtilTest, FullBinaryTreeNodeIndexCalculation)
+{
+    EXPECT_EQ(buddy_util::LeftChild(0), 1);
+    EXPECT_EQ(buddy_util::LeftChild(1), 3);
+    EXPECT_EQ(buddy_util::LeftChild(2), 5);
+
+    EXPECT_EQ(buddy_util::RightChild(0), 2);
+    EXPECT_EQ(buddy_util::RightChild(1), 4);
+    EXPECT_EQ(buddy_util::RightChild(2), 6);
+
+    EXPECT_EQ(buddy_util::Parent(1), 0);
+    EXPECT_EQ(buddy_util::Parent(2), 0);
+    EXPECT_EQ(buddy_util::Parent(4), 1);
+    EXPECT_EQ(buddy_util::Parent(5), 2);
+}
+
 // ----------------------------------------------------------------------------------
 
 class BinManagerTest : public ::testing::Test {
