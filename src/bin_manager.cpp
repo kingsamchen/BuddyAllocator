@@ -34,6 +34,21 @@ BinManager::BinManager(size_t total_slot_count)
     }
 }
 
+BinManager::BinManager(BinManager&& other)
+    : total_slot_count_(other.total_slot_count_),
+      max_consecutive_slot_(std::move(other.max_consecutive_slot_))
+{}
+
+BinManager& BinManager::operator=(BinManager&& rhs)
+{
+    if (this != &rhs) {
+        total_slot_count_ = rhs.total_slot_count_;
+        max_consecutive_slot_ = std::move(rhs.max_consecutive_slot_);
+    }
+
+    return *this;
+}
+
 size_t BinManager::Allocate(size_t slots_required)
 {
     assert(slots_required != 0);
@@ -113,7 +128,7 @@ void BinManager::Free(size_t offset)
     }
 }
 
-size_t BinManager::SlotCountFor(size_t offset)
+size_t BinManager::SlotCountFor(size_t offset) const
 {
     assert(offset < total_slot_count_);
     if (offset >= total_slot_count_) {

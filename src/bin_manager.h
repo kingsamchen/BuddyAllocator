@@ -36,7 +36,8 @@ public:
     // Reclaims a bin associated with the |offest|.
     void Free(size_t offset);
 
-    size_t SlotCountFor(size_t offset);
+    // Gets the slot count of a bin associated with the |offset|.
+    size_t SlotCountFor(size_t offset) const;
 
     static const size_t noffset = static_cast<size_t>(-1);
 
