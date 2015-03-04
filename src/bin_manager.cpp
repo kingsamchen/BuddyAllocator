@@ -4,7 +4,13 @@
 
 #include "bin_manager.h"
 
+#if defined(UNITTEST_ENABLED)
+#define NDEBUG
 #include "kbase\error_exception_util.h"
+#undef NDEBUG
+#else
+#include "kbase\error_exception_util.h"
+#endif
 
 #include "buddy_util.h"
 

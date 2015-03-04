@@ -43,6 +43,13 @@ TEST(BuddyUtilTest, IsPowerOf2)
     }
 }
 
+TEST(BuddyUtilTest, NearestUpperPowerOf2)
+{
+    EXPECT_EQ(buddy_util::NearestUpperPowerOf2(1), 1);
+    EXPECT_EQ(buddy_util::NearestUpperPowerOf2(4), 4);
+    EXPECT_EQ(buddy_util::NearestUpperPowerOf2(7), 8);
+}
+
 // ----------------------------------------------------------------------------------
 
 class BinManagerTest : public ::testing::Test {
@@ -70,8 +77,12 @@ TEST_F(BinManagerTest, Construction)
         ASSERT_EQ(get_total_slot_count(bm), 4);
         EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {4,2,2,1,1,1,1}));
     }
-
-    // TODO: test two exceptions with bm(0) and bm(7)
+    {
+        EXPECT_ANY_THROW({BinManager bm(0);});
+    }
+    {
+        EXPECT_ANY_THROW({BinManager bm(7);});
+    }
 }
 
 // ----------------------------------------------------------------------------------
