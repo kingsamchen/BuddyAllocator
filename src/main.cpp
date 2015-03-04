@@ -101,6 +101,31 @@ TEST_F(BinManagerTest, Construction)
     }
 }
 
+TEST_F(BinManagerTest, Allocate)
+{
+    BinManager bm(8);
+    ASSERT_EQ(get_total_slot_count(bm), 8);
+    EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {8,4,4,2,2,2,2,1,1,1,1,1,1,1,1}));
+
+    // need 3 slots, allocate 4 slots in fact.
+    // index == 0
+    auto index = bm.Allocate(3);
+    ASSERT_EQ(index, 0);
+    EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {4,0,4,2,2,2,2,1,1,1,1,1,1,1,1}));
+
+    // need 2 slots.
+    // index == 4
+    index = bm.Allocate(2);
+    ASSERT_EQ(index, 4);
+    EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {2,0,2,2,2,0,2,1,1,1,1,1,1,1,1}));
+
+    // need yet another 2 slots.
+    // index == 6
+    index = bm.Allocate(2);
+    ASSERT_EQ(index, 6);
+    EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {0,0,0,2,2,0,0,1,1,1,1,1,1,1,1}));
+}
+
 // ----------------------------------------------------------------------------------
 
 int main(int argc, char* argv[])

@@ -47,7 +47,9 @@ size_t BinManager::Allocate(size_t slots_required)
     }
 
     size_t index = 0;
-    for (; max_consecutive_slot_[index] != slots_needed;) {
+    for (auto node_slots = total_slot_count_;
+         node_slots != slots_needed;
+         node_slots >>= 1) {
         if (max_consecutive_slot_[buddy_util::LeftChild(index)] >= slots_needed) {
             index = buddy_util::LeftChild(index);
         } else {
@@ -55,9 +57,11 @@ size_t BinManager::Allocate(size_t slots_required)
         }
     }
 
-    max_consecutive_slot_[index] = 0;
+    // The relative distance of first slot in the bin just now allocated to the first
+    // slot in the underlying raw memory chunk.
     size_t offset = (index + 1) * slots_needed - total_slot_count_;
 
+    max_consecutive_slot_[index] = 0;
     while (index) {
         index = buddy_util::Parent(index);
         max_consecutive_slot_[index] = std::max(
