@@ -14,6 +14,7 @@
 
 #include "kbase\error_exception_util.h"
 
+#include "buddy_util.h"
 #include "compiler_helper.h"
 
 template<typename BlockType, size_t Granularity>
@@ -31,13 +32,16 @@ using DefaultSlotTraits = SlotTraits<uint8_t, 4096>;
 
 template<typename SlotTraitsType = DefaultSlotTraits>
 class MemoryBin {
-private:
+public:
     using Slot = SlotTraitsType;
 
-public:
-    MemoryBin(size_t slot_count)
-        : slots_(std::make_unique<Slot[]>(slot_count)), slot_count_(slot_count)
-    {}
+    // |slot_count| must be a power of 2.
+    explicit MemoryBin(size_t slot_count)
+        : slot_count_(slot_count)
+    {
+        ENSURE(buddy_util::IsPowerOf2(slot_count))(slot_count).raise();
+        slots_ = std::make_unique<Slot[]>(slot_count);
+    }
 
     MemoryBin(const MemoryBin&) = delete;
 
@@ -68,15 +72,12 @@ public:
         return &slots_[offset];
     }
 
-    size_t slot_granularity() const
-    {
-        return Slot::granularity;
-    }
-
     size_t slot_count() const
     {
         return slot_count_;
     }
+
+    const static size_t slot_granularity = Slot::granularity;
 
 private:
     FRIEND_TEST_WITH_PREFIX(MemoryBin);
