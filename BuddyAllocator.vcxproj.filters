@@ -17,5 +17,6 @@
     <ClInclude Include="src\bin_manager.h" />
     <ClInclude Include="src\buddy_util.h" />
     <ClInclude Include="src\compiler_helper.h" />
+    <ClInclude Include="src\memory_bin.h" />
   </ItemGroup>
 </Project>

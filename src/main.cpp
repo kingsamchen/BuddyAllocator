@@ -7,6 +7,7 @@
 
 #include "bin_manager.h"
 #include "buddy_util.h"
+#include "memory_bin.h"
 
 namespace {
 
@@ -154,6 +155,17 @@ TEST_F(BinManagerTest, BinSlotCount)
     BinManager bm(8);
     auto ofst = bm.Allocate(3);
     EXPECT_EQ(bm.SlotCountFor(ofst), 4);
+}
+
+// ----------------------------------------------------------------------------------
+
+class MemoryBinTest : public ::testing::Test {
+
+};
+
+TEST_F(MemoryBinTest, SlotGranularity)
+{
+    EXPECT_EQ(MemoryBin<>::slot_granularity(), 4096);
 }
 
 // ----------------------------------------------------------------------------------
