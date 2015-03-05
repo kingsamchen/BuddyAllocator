@@ -8,6 +8,7 @@
 #include "bin_manager.h"
 #include "buddy_util.h"
 #include "memory_bin.h"
+#include "buddy_allocator.h"
 
 namespace {
 
@@ -165,7 +166,7 @@ class MemoryBinTest : public ::testing::Test {
 
 TEST_F(MemoryBinTest, SlotGranularity)
 {
-    EXPECT_EQ(MemoryBin<>(2).slot_granularity(), 4096);
+    EXPECT_EQ(MemoryBin<>::slot_granularity, 4096);
 }
 
 TEST_F(MemoryBinTest, SlotCount)
@@ -179,7 +180,7 @@ TEST_F(MemoryBinTest, Map)
     auto p1 = reinterpret_cast<uint8_t*>(mb.Map(0));
     auto p2 = reinterpret_cast<uint8_t*>(mb.Map(2));
     ptrdiff_t distance = p2 - p1;
-    EXPECT_EQ(distance, mb.slot_granularity() * 2);
+    EXPECT_EQ(distance, MemoryBin<>::slot_granularity * 2);
 }
 
 TEST_F(MemoryBinTest, Move)
@@ -194,6 +195,21 @@ TEST_F(MemoryBinTest, Move)
     mb = std::move(new_mb);
     EXPECT_EQ(mb.slot_count(), 4);
     EXPECT_EQ(new_mb.slot_count(), 0);
+}
+
+// ----------------------------------------------------------------------------------
+
+TEST(BuddyAllocatorTest, UnderlyingSlotGranularity)
+{
+    auto slot_granularity = BuddyAllocator::granularity();
+    std::cout << slot_granularity << std::endl;
+    EXPECT_EQ(slot_granularity, 4096);
+}
+
+TEST(BuddyAllocatorTest, Construction)
+{
+    BuddyAllocator allocator(4096 * 2);
+    EXPECT_EQ(allocator.capacity(), 4096 * 2);
 }
 
 // ----------------------------------------------------------------------------------
