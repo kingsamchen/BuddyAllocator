@@ -40,7 +40,7 @@ public:
 
     ~MemoryBin() = default;
 
-    static size_t slot_granularity()
+    size_t slot_granularity() const
     {
         return Slot::granularity;
     }

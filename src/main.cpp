@@ -165,7 +165,7 @@ class MemoryBinTest : public ::testing::Test {
 
 TEST_F(MemoryBinTest, SlotGranularity)
 {
-    EXPECT_EQ(MemoryBin<>::slot_granularity(), 4096);
+    EXPECT_EQ(MemoryBin<>(2).slot_granularity(), 4096);
 }
 
 // ----------------------------------------------------------------------------------
