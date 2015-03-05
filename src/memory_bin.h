@@ -12,6 +12,8 @@
 #include <cstdint>
 #include <memory>
 
+#include "kbase\error_exception_util.h"
+
 #include "compiler_helper.h"
 
 template<typename BlockType, size_t Granularity>
@@ -34,24 +36,46 @@ private:
 
 public:
     MemoryBin(size_t slot_count)
-        : slots_(std::make_unique<Slot[]>(slot_count))
+        : slots_(std::make_unique<Slot[]>(slot_count)), slot_count_(slot_count)
     {}
 
     MemoryBin(const MemoryBin&) = delete;
 
-    MemoryBin(MemoryBin&& other);
+    MemoryBin(MemoryBin&& other)
+        : slots_(std::move(other.slots_)), slot_count_(other.slot_count_)
+    {
+        other.slot_count_ = 0;
+    }
 
     MemoryBin& operator=(const MemoryBin&) = delete;
 
-    MemoryBin& operator=(MemoryBin&& rhs);
+    MemoryBin& operator=(MemoryBin&& rhs)
+    {
+        if (this != &rhs) {
+            slots_ = std::move(rhs.slots_);
+            slot_count_ = rhs.slot_count_;
+            rhs.slot_count_ = 0;
+        }
+
+        return *this;
+    }
 
     ~MemoryBin() = default;
 
-    Slot* Map(size_t index);
+    Slot* Map(size_t offset)
+    {
+        ENSURE(offset < slot_count_)(offset)(slot_count_).raise();
+        return &slots_[offset];
+    }
 
     size_t slot_granularity() const
     {
         return Slot::granularity;
+    }
+
+    size_t slot_count() const
+    {
+        return slot_count_;
     }
 
 private:
@@ -59,6 +83,7 @@ private:
 
 private:
     std::unique_ptr<Slot[]> slots_;
+    size_t slot_count_;
 };
 
 #endif  // MEMORY_BIN_H_

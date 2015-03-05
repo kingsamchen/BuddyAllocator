@@ -168,6 +168,34 @@ TEST_F(MemoryBinTest, SlotGranularity)
     EXPECT_EQ(MemoryBin<>(2).slot_granularity(), 4096);
 }
 
+TEST_F(MemoryBinTest, SlotCount)
+{
+    EXPECT_EQ(MemoryBin<>(4).slot_count(), 4);
+}
+
+TEST_F(MemoryBinTest, Map)
+{
+    MemoryBin<> mb(4);
+    auto p1 = reinterpret_cast<uint8_t*>(mb.Map(0));
+    auto p2 = reinterpret_cast<uint8_t*>(mb.Map(2));
+    ptrdiff_t distance = p2 - p1;
+    EXPECT_EQ(distance, mb.slot_granularity() * 2);
+}
+
+TEST_F(MemoryBinTest, Move)
+{
+    MemoryBin<> mb(4);
+    auto p_old = mb.Map(0);
+    MemoryBin<> new_mb(std::move(mb));
+    auto p_new = new_mb.Map(0);
+    EXPECT_EQ(new_mb.slot_count(), 4);
+    EXPECT_EQ(mb.slot_count(), 0);
+    EXPECT_EQ(p_old, p_new);
+    mb = std::move(new_mb);
+    EXPECT_EQ(mb.slot_count(), 4);
+    EXPECT_EQ(new_mb.slot_count(), 0);
+}
+
 // ----------------------------------------------------------------------------------
 
 int main(int argc, char* argv[])
