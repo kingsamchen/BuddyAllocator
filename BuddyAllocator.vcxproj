@@ -83,7 +83,6 @@
   <ItemGroup>
     <ClCompile Include="src\bin_manager.cpp" />
     <ClCompile Include="src\buddy_allocator.cpp" />
-    <ClCompile Include="src\buddy_util.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
