@@ -1,3 +1,6 @@
+/*
+ @ Kingsley Chen
+*/
 
 #include "gtest\gtest.h"
 
@@ -210,6 +213,17 @@ TEST(BuddyAllocatorTest, Construction)
 {
     BuddyAllocator allocator(4096 * 2);
     EXPECT_EQ(allocator.capacity(), 4096 * 2);
+}
+
+TEST(BuddyAllocatorTest, NormalUsage)
+{
+    BuddyAllocator allocator;
+    size_t allocated_bytes = 0;
+    auto addr = allocator.Allocate(64, &allocated_bytes);
+    EXPECT_TRUE(addr != nullptr);
+    EXPECT_EQ(allocated_bytes, allocator.QueryAllocatedSize(addr));
+    strcpy_s(static_cast<char*>(addr), 64, "hello world!");
+    EXPECT_STREQ(static_cast<char*>(addr), "hello world!");
 }
 
 // ----------------------------------------------------------------------------------

@@ -24,7 +24,7 @@ public:
 
 private:
     using ptr_int = size_t;
-    using AllocationInfo = std::pair<size_type, size_t>;    // <bin-size, offset>
+    using AllocationInfo = std::pair<size_t, size_t>;    // <bin-size, offset>
     using AllocationTracker = std::unordered_map<ptr_int, AllocationInfo>;
 
     enum { DEFAULT_CAPACITY = 64 * 1024 };
@@ -39,9 +39,11 @@ public:
 
     ~BuddyAllocator() = default;
 
-    pointer Allocate(size_type number_of_bytes);
+    pointer Allocate(size_type number_of_bytes, size_type* bytes_allocated);
 
-    void Deallocate(pointer ptr);
+    void Deallocate(pointer& ptr);
+
+    size_type QueryAllocatedSize(pointer ptr);
 
     size_type capacity() const
     {
@@ -50,6 +52,9 @@ public:
 
     // Returns the granularity of underlying slot.
     static size_t granularity();
+
+private:
+    void AddAllocationRecord(pointer ptr, size_t offset);
 
 private:
     BinManager bin_manager_;
