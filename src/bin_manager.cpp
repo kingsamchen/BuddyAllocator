@@ -5,14 +5,9 @@
 #include "bin_manager.h"
 
 #include <algorithm>
+#include <cassert>
 
-#if defined(UNITTEST_ENABLED)
-#define NDEBUG
-#include "kbase\error_exception_util.h"
-#undef NDEBUG
-#else
-#include "kbase\error_exception_util.h"
-#endif
+#include "kbase/error_exception_util.h"
 
 #include "buddy_util.h"
 
@@ -20,7 +15,7 @@
 BinManager::BinManager(size_t total_slot_count)
     : total_slot_count_(total_slot_count)
 {
-    ENSURE(buddy_util::IsPowerOf2(total_slot_count))(total_slot_count).raise();
+    ENSURE(RAISE, buddy_util::IsPowerOf2(total_slot_count))(total_slot_count).Require();
 
     size_t node_count = (total_slot_count << 1) - 1;
     max_consecutive_slot_.resize(node_count);

@@ -2,7 +2,7 @@
  @ Kingsley Chen
 */
 
-#include "gtest\gtest.h"
+#include "gtest/gtest.h"
 
 #include <algorithm>
 #include <initializer_list>

@@ -12,7 +12,7 @@
 #include <cstdint>
 #include <memory>
 
-#include "kbase\error_exception_util.h"
+#include "kbase/error_exception_util.h"
 
 #include "buddy_util.h"
 #include "compiler_helper.h"
@@ -39,7 +39,7 @@ public:
     explicit MemoryBin(size_t slot_count)
         : slot_count_(slot_count)
     {
-        ENSURE(buddy_util::IsPowerOf2(slot_count))(slot_count).raise();
+        ENSURE(RAISE, buddy_util::IsPowerOf2(slot_count))(slot_count).Require();
         slots_ = std::make_unique<Slot[]>(slot_count);
     }
 
@@ -68,7 +68,7 @@ public:
 
     Slot* Map(size_t offset)
     {
-        ENSURE(offset < slot_count_)(offset)(slot_count_).raise();
+        ENSURE(RAISE, offset < slot_count_)(offset)(slot_count_).Require();
         return &slots_[offset];
     }
 

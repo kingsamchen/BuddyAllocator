@@ -4,7 +4,7 @@
 
 #include "buddy_allocator.h"
 
-#include "kbase\error_exception_util.h"
+#include "kbase/error_exception_util.h"
 
 namespace {
 
@@ -18,7 +18,7 @@ size_t BytesToSlots(size_t size_in_bytes, bool strict_mode)
 {
     auto granularity = BuddyAllocator::granularity();
     if (strict_mode) {
-        ENSURE(size_in_bytes % granularity == 0)(size_in_bytes).raise();
+        ENSURE(RAISE, size_in_bytes % granularity == 0)(size_in_bytes).Require();
     }
 
     return (size_in_bytes + granularity - 1) / granularity;
