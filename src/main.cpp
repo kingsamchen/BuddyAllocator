@@ -4,7 +4,6 @@
 
 #include "gtest/gtest.h"
 
-#include <algorithm>
 #include <initializer_list>
 #include <vector>
 
@@ -75,12 +74,12 @@ TEST(BuddyUtilTest, FullBinaryTreeNodeIndexCalculation)
 
 class BinManagerTest : public ::testing::Test {
 protected:
-    size_t get_total_slot_count(const BinManager& bin_manager)
+    static size_t get_total_slot_count(const BinManager& bin_manager)
     {
         return bin_manager.total_slot_count_;
     }
 
-    const std::vector<size_t>& get_maximum_slot(const BinManager& bin_manager)
+    static const std::vector<size_t>& get_maximum_slot(const BinManager& bin_manager)
     {
         return bin_manager.max_consecutive_slot_;
     }
@@ -97,12 +96,6 @@ TEST_F(BinManagerTest, Construction)
         BinManager bm(4);
         ASSERT_EQ(get_total_slot_count(bm), 4);
         EXPECT_TRUE(VerifyVector<size_t>(get_maximum_slot(bm), {4,2,2,1,1,1,1}));
-    }
-    {
-        EXPECT_ANY_THROW({BinManager bm(0);});
-    }
-    {
-        EXPECT_ANY_THROW({BinManager bm(7);});
     }
 }
 

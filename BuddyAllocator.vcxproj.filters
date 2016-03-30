@@ -5,17 +5,32 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="buddy_allocator">
+      <UniqueIdentifier>{33843bc9-01a8-449c-bcf2-2cf1a10f8802}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\buddy_allocator.cpp" />
-    <ClCompile Include="src\bin_manager.cpp" />
+    <ClCompile Include="src\bin_manager.cpp">
+      <Filter>buddy_allocator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\buddy_allocator.cpp">
+      <Filter>buddy_allocator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\buddy_allocator.h" />
-    <ClInclude Include="src\bin_manager.h" />
-    <ClInclude Include="src\buddy_util.h" />
     <ClInclude Include="src\compiler_helper.h" />
-    <ClInclude Include="src\memory_bin.h" />
+    <ClInclude Include="src\memory_bin.h">
+      <Filter>buddy_allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bin_manager.h">
+      <Filter>buddy_allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\buddy_allocator.h">
+      <Filter>buddy_allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\buddy_util.h">
+      <Filter>buddy_allocator</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
